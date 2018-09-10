@@ -1,0 +1,46 @@
+Linux Progger 1.0
+
+---------------------------------------------------------------------------
+Copyright (c) 2015-2016 The University of Waikato, Hamilton, New Zealand.
+All rights reserved.
+
+This code has been developed by the University of Waikato CROW
+research group. For further information please see http://www.crow.org.nz/.
+---------------------------------------------------------------------------
+
+Report and bugs, questions or comments to meena@waikato.ac.nz
+
+Authors:
+	Meenakshee Mungro
+
+With contributions from:
+	Joshua Scarsbrook
+	Mark Will
+
+Introduction
+=============
+Linux Progger is a Linux kernel module that runs in kernelspace and logs the provenance of files as they are accessed and modified by users on the system.
+
+It uses Linux kernel tracepoints to hook into syscalls when the syscall is called and execute a function (syscall handler) before resuming normal execution of the syscall. The syscall handler fetches the original arguments of the syscall and prepares an entry in binary format for the syscall. That entry is then transferred over the network via TCP if a connection to the Redis server is available, or logged to a file if the connection is closed.
+
+NOTE: Network logging is currently configured specifically for Redis only
+
+Requirements
+=============
+ - gcc : GNU Compiler Collection (GCC) to compile Progger
+ - Linux Kernel headers
+ - Redis server IP address and port : required for logging over the network
+
+Configuration
+=============
+Network logging to a Redis server requires adding the server IP address and port number to the following header file:
+
+	proggerConfig.h
+
+Installation
+=============
+After ensuring that the requirements for compilation are met, running the following commands will insert the Linux Progger module into the kernel:
+
+	make
+	./install.sh
+
